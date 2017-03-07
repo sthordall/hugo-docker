@@ -28,7 +28,7 @@ WORKDIR /usr/share/site
 # Expose defualt Hugo port
 EXPOSE 1313
 
-# Automagically build site
+# Add derived image build directory to site directory
 ONBUILD ADD . /usr/share/site
 
 # Serve site as default
