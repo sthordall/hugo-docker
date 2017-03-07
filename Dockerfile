@@ -3,7 +3,9 @@ FROM alpine:latest
 MAINTAINER Stephan Thordal <stephan@thordal.io>
 
 ENV HUGO_VERSION 0.19
-ENV HUGO_BINARY hugo_${HUGO_VERSION}_linux-64bit
+ENV HUGO_TARBALL hugo_${HUGO_VERSION}_linux-64bit.tar.gz
+ENV HUGO_BINARY hugo_${HUGO_VERSION}_linux_amd64
+ENV HUGO_UNTAR_DIR ${HUGO_BINARY}
 
 # Install pygments and bash
 RUN apk update \
@@ -13,11 +15,11 @@ RUN apk update \
 
 # Download/install Hugo
 RUN mkdir /usr/local/hugo
-ADD https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/${HUGO_BINARY}.tgz \
+ADD https://github.com/spf13/hugo/releases/download/v${HUGO_VERSION}/${HUGO_TARBALL} \
     /usr/local/hugo/
-RUN tar xzf /usr/local/hugo/${HUGO_BINARY}.tgz -C /usr/local/hugo/ \
-    && ln -s /usr/local/hugo/hugo /usr/local/bin/hugo \
-    && rm /usr/local/hugo/${HUGO_BINARY}.tgz
+RUN tar xzf /usr/local/hugo/${HUGO_TARBALL} -C /usr/local/hugo \
+    && ln -s /usr/local/hugo/${HUGO_UNTAR_DIR}/${HUGO_BINARY} /usr/local/bin/hugo \
+    && rm /usr/local/hugo/${HUGO_TARBALL}
 
 # Create workdir
 RUN mkdir /usr/share/site
